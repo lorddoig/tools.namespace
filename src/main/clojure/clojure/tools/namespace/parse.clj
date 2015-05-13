@@ -33,7 +33,8 @@
   {:pre [(instance? java.io.PushbackReader rdr)]}
   (try
    (loop []
-     (let [form (doto (read rdr) str)]  ; str forces errors, see TNS-1
+     (let [form (doto (read {:read-cond true
+                             :features #{:clj}} rdr) str)]  ; str forces errors, see TNS-1
        (if (ns-decl? form)
          form
          (recur))))
